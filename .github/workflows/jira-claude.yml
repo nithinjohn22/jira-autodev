@@ -1,0 +1,45 @@
+name: AI ticket implementation
+
+on:
+  repository_dispatch:
+    types: [jira_ticket_assigned]
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Fetch Jira ticket ${{ github.event.client_payload.issue_key }} using the
+            atlassian MCP tools. Read its description and acceptance criteria, explore
+            this codebase, implement the change on a new branch following the naming
+            convention in CLAUDE.md, run `composer test` to verify nothing is broken,
+            and open a draft pull request referencing the ticket. Post a comment on
+            the Jira ticket with the PR link when done.
+          claude_args: "--max-turns 25 --model claude-sonnet-4-6 --mcp-config .claude/mcp-atlassian.json"
+          settings: ${{ vars.CLAUDE_SETTINGS_JSON }}
+
+      - name: Notify Teams
+        if: success()
+        run: |
+          curl -s -H "Content-Type: application/json" \
+            -d "{\"text\": \"Claude opened a draft PR for ${{ github.event.client_payload.issue_key }} — check GitHub for review.\"}" \
+            "${{ secrets.TEAMS_WEBHOOK_URL }}"

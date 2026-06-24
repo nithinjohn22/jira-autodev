@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__atlassian__*",
+      "Read",
+      "Edit",
+      "Bash(git:*)",
+      "Bash(composer:*)",
+      "Bash(php:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
+    ]
+  },
+  "permissionMode": "allowlist"
+}
