@@ -6,13 +6,13 @@
 
 ## Before opening a PR
 - Run `composer test` — all tests must pass
-- Run `composer lint` if available — fix any reported issues
+- Run `composer lint` to syntax-check src/ and tests/
 - Keep changes scoped to the ticket; do not refactor unrelated code
 
 ## Code style
 - Follow PSR-12
-- Existing error handling lives in `src/Utils/` — match those patterns
-- Never modify files under `/infra` without explicit instruction
+- Autoloader: `App\` maps to `src/`, `App\Tests\` maps to `tests/`
+- Error handling patterns live in `src/Utils/ErrorHandler.php` — match those patterns for new error wrapping
 
 ## PR conventions
 - Open as **draft** — never merge directly
@@ -20,6 +20,7 @@
 - Add a one-paragraph summary of what changed and why
 
 ## Off-limits
-- Do not touch environment files (`.env`, `.env.*`)
-- Do not delete or rename database migration files
-- Do not change CI configuration files (`.github/workflows/*.yml`)
+- Do not touch `.env` or `.env.*` files
+- Do not delete or rename files under `tests/` without adding equivalent replacements
+- Do not modify `.github/workflows/*.yml`
+- Do not modify `composer.json` or `phpunit.xml` unless the ticket explicitly requires it

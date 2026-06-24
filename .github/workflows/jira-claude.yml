@@ -25,6 +25,10 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - uses: anthropics/claude-code-action@v1
+        env:
+          ATLASSIAN_SITE_NAME: ${{ secrets.ATLASSIAN_SITE_NAME }}
+          ATLASSIAN_USER_EMAIL: ${{ secrets.ATLASSIAN_USER_EMAIL }}
+          ATLASSIAN_API_TOKEN: ${{ secrets.ATLASSIAN_API_TOKEN }}
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
