@@ -44,7 +44,10 @@ jobs:
 
       - name: Notify Teams
         if: success()
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
+          [ -z "$TEAMS_WEBHOOK_URL" ] && exit 0
           curl -s -H "Content-Type: application/json" \
             -d "{\"text\": \"Claude opened a draft PR for ${{ github.event.client_payload.issue_key }} — check GitHub for review.\"}" \
-            "${{ secrets.TEAMS_WEBHOOK_URL }}"
+            "$TEAMS_WEBHOOK_URL"
