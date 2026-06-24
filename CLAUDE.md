@@ -1,7 +1,7 @@
 # Project conventions
 
 ## Branching
-- Branch naming: `feature/<JIRA-KEY>-<short-slug>` (e.g. `feature/PROJ-123-fix-login`)
+- Branch naming: `feature/<JIRA-KEY>-<short-slug>` (e.g. `feature/JCA-123-fix-login`)
 - Always branch from `main`
 
 ## Before opening a PR
@@ -16,7 +16,7 @@
 
 ## PR conventions
 - Open as **draft** — never merge directly
-- Reference the Jira ticket in the PR title: `[PROJ-123] Short description`
+- Reference the Jira ticket in the PR title: `[JCA-123] Short description`
 - Add a one-paragraph summary of what changed and why
 
 ## Off-limits

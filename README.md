@@ -37,12 +37,9 @@ Teams webhook notification → you review the draft PR
 
 ## One-time setup (do this in order)
 
-### 1. Create a free Atlassian / Jira account
+### 1. ✅ Atlassian / Jira account
 
-1. Go to [atlassian.com](https://atlassian.com) → **Get it free**
-2. Create a Jira Software project (free tier supports up to 10 users)
-3. Note your **site name** — it's the part before `.atlassian.net` in your URL.
-   - Example: if your Jira is `nithinjohn.atlassian.net`, your site name is `nithinjohn`
+Already set up at **awsm.atlassian.net** (project key: `JCA`). Skip this step.
 
 ### 2. Generate an Atlassian API token
 
@@ -69,8 +66,8 @@ Add these five secrets:
 | Secret name | Value |
 |---|---|
 | `ANTHROPIC_API_KEY` | Your Anthropic API key from [console.anthropic.com](https://console.anthropic.com) |
-| `ATLASSIAN_SITE_NAME` | Your site subdomain (e.g. `nithinjohn`) |
-| `ATLASSIAN_USER_EMAIL` | The email you use to log into Atlassian |
+| `ATLASSIAN_SITE_NAME` | `awsm` |
+| `ATLASSIAN_USER_EMAIL` | `nithin@awsm.in` |
 | `ATLASSIAN_API_TOKEN` | The token you created in step 2 |
 | `TEAMS_WEBHOOK_URL` | Your Teams incoming webhook URL (see below) |
 
@@ -125,9 +122,9 @@ In Jira: **Project settings** → **Automation** → **Create rule**
 2. Add the label **`ai-draft`** to the ticket
 3. Watch **Actions** tab in GitHub — the workflow starts within seconds
 4. Claude will:
-   - Create branch `feature/PROJ-123-short-slug`
+   - Create branch `feature/JCA-123-short-slug`
    - Implement the change and run tests
-   - Open a draft PR titled `[PROJ-123] Short description`
+   - Open a draft PR titled `[JCA-123] Short description`
    - Comment the PR link on the Jira ticket
    - Notify Teams
 
