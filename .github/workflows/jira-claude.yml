@@ -25,21 +25,47 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - uses: anthropics/claude-code-action@v1
+      - name: Fetch Jira ticket
+        id: jira
         env:
           ATLASSIAN_SITE_NAME: ${{ secrets.ATLASSIAN_SITE_NAME }}
           ATLASSIAN_USER_EMAIL: ${{ secrets.ATLASSIAN_USER_EMAIL }}
           ATLASSIAN_API_TOKEN: ${{ secrets.ATLASSIAN_API_TOKEN }}
+          ISSUE_KEY: ${{ github.event.client_payload.issue_key }}
+        run: |
+          TICKET=$(curl -s \
+            -u "$ATLASSIAN_USER_EMAIL:$ATLASSIAN_API_TOKEN" \
+            -H "Accept: application/json" \
+            "https://${ATLASSIAN_SITE_NAME}.atlassian.net/rest/api/2/issue/${ISSUE_KEY}")
+
+          SUMMARY=$(echo "$TICKET" | jq -r '.fields.summary // "No summary"')
+          DESCRIPTION=$(echo "$TICKET" | jq -r '.fields.description // "No description"')
+
+          echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
+          {
+            echo "description<<JIRA_EOF"
+            echo "$DESCRIPTION"
+            echo "JIRA_EOF"
+          } >> $GITHUB_OUTPUT
+
+      - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            Fetch Jira ticket ${{ github.event.client_payload.issue_key }} using the
-            atlassian MCP tools. Read its description and acceptance criteria, explore
-            this codebase, implement the change on a new branch following the naming
-            convention in CLAUDE.md, run `composer test` to verify nothing is broken,
-            and open a draft pull request referencing the ticket. Post a comment on
-            the Jira ticket with the PR link when done.
-          claude_args: "--max-turns 25 --model claude-sonnet-4-6 --mcp-config .claude/mcp-atlassian.json"
+            Implement the following Jira ticket: ${{ github.event.client_payload.issue_key }}
+
+            Title: ${{ steps.jira.outputs.summary }}
+
+            Description:
+            ${{ steps.jira.outputs.description }}
+
+            Instructions:
+            - Explore this codebase to understand the existing patterns
+            - Implement the change on a new branch following the naming convention in CLAUDE.md
+            - Run `composer test` to verify nothing is broken
+            - Open a draft pull request with title [${{ github.event.client_payload.issue_key }}] followed by the ticket title
+            - Add a one-paragraph summary in the PR description explaining what changed and why
+          claude_args: "--max-turns 25 --model claude-sonnet-4-6"
           settings: ${{ vars.CLAUDE_SETTINGS_JSON }}
           show_full_output: "true"
 
