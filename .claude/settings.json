@@ -4,9 +4,11 @@
       "mcp__atlassian__*",
       "Read",
       "Edit",
+      "Write",
       "Bash(git:*)",
       "Bash(composer:*)",
-      "Bash(php:*)"
+      "Bash(php:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [
       "Bash(rm:*)",
