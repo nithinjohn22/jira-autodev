@@ -94,7 +94,7 @@ In Jira: **Project settings** → **Automation** → **Create rule**
 **Trigger:** Issue updated
 **Condition:** Label added = `ai-draft`
 **Action:** Send web request
-- URL: `https://api.github.com/repos/nithinjohn22/jira-code-agent/dispatches`
+- URL: `https://api.github.com/repos/nithinjohn22/jira-autodev/dispatches`
 - Method: `POST`
 - Headers:
   ```
@@ -112,7 +112,7 @@ In Jira: **Project settings** → **Automation** → **Create rule**
 
 **Creating the GitHub PAT:**
 1. GitHub → **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**
-2. Set repository access to `nithinjohn22/jira-code-agent`
+2. Set repository access to `nithinjohn22/jira-autodev`
 3. Permissions: **Contents** = Read & Write, **Pull requests** = Read & Write
 4. In Jira Automation, store the PAT as a **secured value** (not plain text)
 
