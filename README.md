@@ -1,5 +1,7 @@
 # Jira → Claude Code Agent
 
+> **This is a GitHub template.** Click the green **"Use this template"** button above to create your own copy, then follow the [One-time setup](#one-time-setup-do-this-in-order) steps below.
+
 Automatically implements Jira tickets using Claude AI. When you label a Jira ticket `ai-draft`, this pipeline:
 
 1. Triggers a GitHub Actions workflow via Jira Automation
